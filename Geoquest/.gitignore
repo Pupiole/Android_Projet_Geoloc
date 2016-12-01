@@ -7,3 +7,7 @@
 /build
 /captures
 .externalNativeBuild
+
+.idea/inspectionProfiles/
+.idea/encoding.xml
+.idea/misc.xml
