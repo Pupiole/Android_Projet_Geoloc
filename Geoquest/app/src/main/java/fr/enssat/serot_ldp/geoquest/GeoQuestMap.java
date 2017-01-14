@@ -103,10 +103,11 @@ public class GeoQuestMap extends AppCompatActivity {
         final RelativeLayout.LayoutParams imageHintLayoutParams = new RelativeLayout.LayoutParams(
                 RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         imageHintLayoutParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-        imageHintLayoutParams.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
+        imageHintLayoutParams.addRule(RelativeLayout.CENTER_VERTICAL);
         final RelativeLayout.LayoutParams textHintLayoutParams = new RelativeLayout.LayoutParams(
                 RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         textHintLayoutParams.addRule(RelativeLayout.RIGHT_OF, imageHint.getId());
+        textHintLayoutParams.addRule(RelativeLayout.CENTER_VERTICAL);
 
         hintLayout.addView(imageHint, imageHintLayoutParams);
         hintLayout.addView(textHint, textHintLayoutParams);
@@ -128,15 +129,25 @@ public class GeoQuestMap extends AppCompatActivity {
                 }
             }
         });
-        setHint("Hint Hint Hint Hint Hint Hint Hint Hint Hint",
+        setHint("Hint",
                 "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/Android_robot.svg/2000px-Android_robot.svg.png");
     }
 
     private void setHint(String text, String urlImage) {
         TextView textHint = (TextView) findViewById(R.id.textHintId);
-        textHint.setText(text);
-        new DownloadImageTask((ImageView) findViewById(R.id.imageHintId))
-                .execute(urlImage);
+        ImageView imageView = (ImageView) findViewById(R.id.imageHintId);
+        if (text == "") {
+            textHint.setVisibility(View.GONE);
+        } else {
+            textHint.setVisibility(View.VISIBLE);
+            textHint.setText(text);
+        }
+        if (urlImage == "") {
+            imageView.setVisibility(View.GONE);
+        } else {
+            imageView.setVisibility(View.VISIBLE);
+            new DownloadImageTask(imageView).execute(urlImage);
+        }
     }
 
 /* Class My Location Listener */
