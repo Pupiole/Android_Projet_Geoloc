@@ -2,7 +2,6 @@ package fr.enssat.serot_ldp.geoquest;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import com.google.*;
 
 public class MainActivity extends AppCompatActivity {
 

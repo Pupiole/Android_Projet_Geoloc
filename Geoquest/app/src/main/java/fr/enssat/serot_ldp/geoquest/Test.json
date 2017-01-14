@@ -1,0 +1,19 @@
+[{
+    "Coordonnee": {
+      "Longitude": "-0.3219649999999774",
+      "Latitude": "49.1347368"
+    },
+    "Indice": {
+      "Image": "String",
+      "Texte": "String"
+    }
+  }, {
+    "Coordonnee": {
+      "Longitude": "-0.3219649999999774",
+      "Latitude": "49.1347368"
+    },
+    "Indice": {
+      "Image": "String",
+      "Texte": "String"
+    }
+  }]

@@ -11,7 +11,8 @@ import static org.junit.Assert.*;
  */
 public class ExampleUnitTest {
     @Test
-    public void addition_isCorrect() throws Exception {
-        assertEquals(4, 2 + 2);
+    public void test() throws Exception {
+        JsonParser TestParser = new JsonParser();
+        TestParser.JsonParser("/app/src/main/res/Test.json");
     }
 }
