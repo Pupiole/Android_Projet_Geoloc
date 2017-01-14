@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Geoquest</string>
+    <string name="create_balise_title">Céer une balise</string>
+    <string name="modify_balise_title">Modifier une balise</string>
+    <string name="create_balise">Ajouter</string>
+    <string name="cancel">Annuler</string>
+    <string name="delete">Supprimer</string>
+    <string name="modify">Modifier</string>
 </resources>
