@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="hintLayout" type="id" />
+    <item name="imageHintId" type="id" />
+    <item name="textHintId" type="id" />
+</resources>

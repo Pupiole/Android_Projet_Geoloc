@@ -2,12 +2,21 @@ package fr.enssat.serot_ldp.geoquest;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.osmdroid.api.IMapController;
@@ -18,6 +27,7 @@ import org.osmdroid.views.overlay.ItemizedIconOverlay;
 import org.osmdroid.views.overlay.ItemizedOverlay;
 import org.osmdroid.views.overlay.OverlayItem;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 
 /**
@@ -31,10 +41,9 @@ public class GeoQuestMap extends AppCompatActivity {
 
     @Override public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_map);
         org.osmdroid.tileprovider.constants.OpenStreetMapTileProviderConstants.setUserAgentValue(BuildConfig.APPLICATION_ID);
 
-        map = (MapView) findViewById(R.id.map);
+        map = new MapView(this);
         map.setTileSource(TileSourceFactory.MAPNIK);
         map.setBuiltInZoomControls(false);
         map.setMultiTouchControls(false);
@@ -65,11 +74,74 @@ public class GeoQuestMap extends AppCompatActivity {
                     }
                 }, getApplicationContext());
         this.map.getOverlays().add(this.mMyLocationOverlay);
+
+
+        // Hint
+
+        ImageView imageHint = new ImageView(this);
+        imageHint.setId(R.id.imageHintId);
+        TextView textHint = new TextView(this);
+        textHint.setId(R.id.textHintId);
+        Button boutonHint = new Button(this);
+        boutonHint.setText("Indice");
+
+        final RelativeLayout relativeLayout = new RelativeLayout(this);
+        final RelativeLayout hintLayout = new RelativeLayout(this);
+        hintLayout.setId(R.id.hintLayout);
+        hintLayout.setPadding(20, 20, 20, 20);
+        hintLayout.setBackgroundColor(Color.rgb(255, 255, 255));
+        final RelativeLayout.LayoutParams hintParams = new RelativeLayout.LayoutParams(
+                RelativeLayout.LayoutParams.MATCH_PARENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
+        final RelativeLayout.LayoutParams boutonParams = new RelativeLayout.LayoutParams(
+                RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
+        boutonParams.addRule(RelativeLayout.BELOW, R.id.hintLayout);
+        boutonParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
+        final RelativeLayout.LayoutParams mapViewLayoutParams = new RelativeLayout.LayoutParams(
+                RelativeLayout.LayoutParams.MATCH_PARENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
+        final RelativeLayout.LayoutParams panelLayoutParams = new RelativeLayout.LayoutParams(
+                RelativeLayout.LayoutParams.MATCH_PARENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
+        final RelativeLayout.LayoutParams imageHintLayoutParams = new RelativeLayout.LayoutParams(
+                RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        imageHintLayoutParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+        imageHintLayoutParams.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
+        final RelativeLayout.LayoutParams textHintLayoutParams = new RelativeLayout.LayoutParams(
+                RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        textHintLayoutParams.addRule(RelativeLayout.RIGHT_OF, imageHint.getId());
+
+        hintLayout.addView(imageHint, imageHintLayoutParams);
+        hintLayout.addView(textHint, textHintLayoutParams);
+        relativeLayout.addView(map, mapViewLayoutParams);
+        relativeLayout.addView(hintLayout, hintParams);
+        relativeLayout.addView(boutonHint, boutonParams);
+        setContentView(relativeLayout);
+
+        boutonHint.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (hintLayout.getVisibility() == View.VISIBLE)
+                {
+                    hintLayout.setVisibility(View.GONE);
+                }
+                else
+                {
+                    hintLayout.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+        setHint("Hint Hint Hint Hint Hint Hint Hint Hint Hint",
+                "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/Android_robot.svg/2000px-Android_robot.svg.png");
+    }
+
+    private void setHint(String text, String urlImage) {
+        TextView textHint = (TextView) findViewById(R.id.textHintId);
+        textHint.setText(text);
+        new DownloadImageTask((ImageView) findViewById(R.id.imageHintId))
+                .execute(urlImage);
     }
 
 /* Class My Location Listener */
 
-    public class MyLocationListener implements LocationListener {
+    private class MyLocationListener implements LocationListener {
 
         @Override
         public void onLocationChanged(Location loc)
@@ -120,6 +192,33 @@ public class GeoQuestMap extends AppCompatActivity {
 
         }
 
+    }
+
+    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+        ImageView bmImage;
+
+        public DownloadImageTask(ImageView bmImage) {
+            this.bmImage = bmImage;
+        }
+
+        protected Bitmap doInBackground(String... urls) {
+            String urldisplay = urls[0];
+            Bitmap mIcon11 = null;
+            try {
+                InputStream in = new java.net.URL(urldisplay).openStream();
+                mIcon11 = BitmapFactory.decodeStream(in);
+                in.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return mIcon11;
+        }
+
+        protected void onPostExecute(Bitmap result) {
+            bmImage.setImageBitmap(result);
+            bmImage.getLayoutParams().height = 300;
+            bmImage.getLayoutParams().width = 300;
+        }
     }
 
 }
