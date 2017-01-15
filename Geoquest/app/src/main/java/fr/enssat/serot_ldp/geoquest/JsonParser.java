@@ -25,18 +25,16 @@ import java.util.List;
 
 public class JsonParser {
 
-    public void JsonParser(String Localisationgeojson) throws JSONException {
+    public Balises[] JsonParser(String Localisationgeojson) throws JSONException {
 
         Gson gson = new Gson();
         Balises[] staff = null;
         try {
-            staff = gson.fromJson(new FileReader("/home/paul/Android_Projet_Geoloc/Geoquest/app/src/main/java/fr/enssat/serot_ldp/geoquest/Test.json"), Balises[].class);
+            staff = gson.fromJson(new FileReader(Localisationgeojson), Balises[].class);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        for(int i =0;i<staff.length;i++) {
-            System.out.println(staff[i]);
-        }
+        return staff;
     }
 
     public void saveJsonFile(Context context, String parcoursName, List<Balises> parcours) throws JSONException {
