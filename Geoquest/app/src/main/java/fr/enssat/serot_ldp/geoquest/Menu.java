@@ -1,5 +1,7 @@
 package fr.enssat.serot_ldp.geoquest;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -15,10 +17,11 @@ import java.util.List;
  * Created by paul on 01/12/16.
  */
 
-public class Menu extends AppCompatActivity {
+public class Menu extends AppCompatActivity{
 
     private Spinner spinner;
     private Button btnjouer, btnediter;
+    public String map_game = "test";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +52,29 @@ public class Menu extends AppCompatActivity {
         btnjouer = (Button) findViewById(R.id.button4);
         btnediter = (Button) findViewById(R.id.button6);
 
+        btnjouer.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                Intent activity_play = new Intent(Menu.this, GeoQuestMap.class);
+                activity_play.putExtra(map_game,"test");
+            }
+        });
+
+
+        btnediter.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+               // Intent activity_play = new Intent(Menu.this, editeur.class);
+
+            }
+        });
+
+
+
+
+
         spinner.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -62,4 +88,7 @@ public class Menu extends AppCompatActivity {
 
         spinner.setOnItemSelectedListener(new CustomOnItemSelectedListener());
     }
+
+
+
 }

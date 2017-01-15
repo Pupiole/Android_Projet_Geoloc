@@ -1,6 +1,7 @@
 package fr.enssat.serot_ldp.geoquest;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -41,10 +42,14 @@ public class GeoQuestMap extends AppCompatActivity {
     private ItemizedOverlay<OverlayItem> mMyLocationOverlay;
     private Balises[] Tab_Balises;
     private int hint_num = 0;
+    //private String map_menu=null;
 
     @Override public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         org.osmdroid.tileprovider.constants.OpenStreetMapTileProviderConstants.setUserAgentValue(BuildConfig.APPLICATION_ID);
+
+       // Intent i = getIntent();
+       // map_menu = i.getStringExtra("map_game");
 
         map = new MapView(this);
         map.setTileSource(TileSourceFactory.MAPNIK);
