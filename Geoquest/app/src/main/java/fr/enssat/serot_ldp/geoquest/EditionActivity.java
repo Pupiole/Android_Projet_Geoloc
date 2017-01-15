@@ -33,6 +33,7 @@ public class EditionActivity extends AppCompatActivity {
     private static List<Balises> parcours;
     private static List<String> listParcours;
     private static int posBalise;
+    private static ArrayAdapter<String> itemsAdapter;
 
     @Override public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,7 +42,7 @@ public class EditionActivity extends AppCompatActivity {
         parcours = new ArrayList<>();
         listParcours = new ArrayList<>();
 
-        ArrayAdapter<String> itemsAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listParcours);
+        itemsAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listParcours);
         ListView listViewBalises = (ListView) findViewById(R.id.listBalises);
         listViewBalises.setAdapter(itemsAdapter);
         listViewBalises.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -119,6 +120,7 @@ public class EditionActivity extends AppCompatActivity {
                                 Indice indice = new Indice(editTextH.getText().toString(), editImageH.getText().toString());
                                 parcours.add(new Balises(coordonnee, indice));
                                 listParcours.add("Balise" + parcours.size());
+                                itemsAdapter.notifyDataSetChanged();
                             }
                         }
                     })
@@ -162,7 +164,7 @@ public class EditionActivity extends AppCompatActivity {
                                 Coordonnee coordonnee = new Coordonnee(Double.parseDouble(editLong.getText().toString()),
                                         Double.parseDouble(editLat.getText().toString()));
                                 Indice indice = new Indice(editTextH.getText().toString(), editImageH.getText().toString());
-                                parcours.add(posBalise, new Balises(coordonnee, indice));
+                                parcours.set(posBalise, new Balises(coordonnee, indice));
                             }
                         }
                     })
@@ -175,6 +177,7 @@ public class EditionActivity extends AppCompatActivity {
                         public void onClick(DialogInterface dialog, int id) {
                             parcours.remove(posBalise);
                             listParcours.remove(listParcours.size()-1);
+                            itemsAdapter.notifyDataSetChanged();
                         }
                     });
             return builder.create();
