@@ -20,7 +20,7 @@ public class JsonParser {
         Balises[] list = null;
         Gson gson = new Gson();
         try {
-            list = gson.fromJson(new FileReader("/home/paul/Android_Projet_Geoloc/Geoquest/app/src/main/java/fr/enssat/serot_ldp/geoquest/Test.json"), Balises[].class);
+            list = gson.fromJson(new FileReader(Localisationgeojson), Balises[].class);
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();

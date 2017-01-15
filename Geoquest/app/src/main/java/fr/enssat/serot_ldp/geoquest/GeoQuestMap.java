@@ -19,6 +19,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONException;
 import org.osmdroid.api.IMapController;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
@@ -38,6 +39,8 @@ public class GeoQuestMap extends AppCompatActivity {
     private MapView map;
     private IMapController mapController;
     private ItemizedOverlay<OverlayItem> mMyLocationOverlay;
+    private Balises[] Tab_Balises;
+    private int hint_num = 0;
 
     @Override public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -129,13 +132,20 @@ public class GeoQuestMap extends AppCompatActivity {
                 }
             }
         });
-        setHint("Hint",
-                "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/Android_robot.svg/2000px-Android_robot.svg.png");
+
+
+        try {
+            Tab_Balises = new JsonParser().JsonParser("/home/paul/Android_Projet_Geoloc/Geoquest/app/src/main/java/fr/enssat/serot_ldp/geoquest/Test.json");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        setHint(Tab_Balises[hint_num].getI().getText(), Tab_Balises[hint_num].getI().getImage());
     }
 
     private void setHint(String text, String urlImage) {
         TextView textHint = (TextView) findViewById(R.id.textHintId);
         ImageView imageView = (ImageView) findViewById(R.id.imageHintId);
+
         if (text == "") {
             textHint.setVisibility(View.GONE);
         } else {
@@ -183,6 +193,15 @@ public class GeoQuestMap extends AppCompatActivity {
                     }, getApplicationContext());
 
             map.getOverlays().add(mMyLocationOverlay);
+
+            if (loc.getLatitude()==Tab_Balises[hint_num].getC().getLatitude()
+                    && loc.getLongitude()==Tab_Balises[hint_num].getC().getLongitude()){
+                if (hint_num<Tab_Balises.length-1) {
+                    hint_num++;
+                    setHint(Tab_Balises[hint_num].getI().getText(), Tab_Balises[hint_num].getI().getImage());
+                } else
+                    setHint("Vous avez gagné !","http://t3.gstatic.com/images?q=tbn:ANd9GcTBKL45MTNFLNoSeqhQvER7XsB2LbK_Htl28rW7nt5GZWWTi8NxC5jQmuA");
+            }
         }
 
         @Override
@@ -230,6 +249,10 @@ public class GeoQuestMap extends AppCompatActivity {
             bmImage.getLayoutParams().height = 300;
             bmImage.getLayoutParams().width = 300;
         }
+    }
+
+    public void Balise_use (){
+
     }
 
 }
