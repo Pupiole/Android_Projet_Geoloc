@@ -1,6 +1,5 @@
 package fr.enssat.serot_ldp.geoquest;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -10,9 +9,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
-import android.widget.Toast;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -26,11 +23,10 @@ public class Menu extends AppCompatActivity {
 
     private Spinner spinner;
     private Button btnjouer, btnediter,btnrapide;
-    public String map_game = "test";
     private static final String TAG = "menu";
     String[] filesnames = null;
     List<String> list = null;
-    String selected_item =" ";
+    String selected_item ="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,19 +38,20 @@ public class Menu extends AppCompatActivity {
         btnjouer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent activity_play = new Intent(Menu.this, GeoQuestMap.class);
-                activity_play.putExtra("menu",selected_item);
-                startActivity(activity_play);
+                if (!selected_item.isEmpty()) {
+                    Intent activity_play = new Intent(Menu.this, GeoQuestMap.class);
+                    activity_play.putExtra("menu", "parcours_" + selected_item);
+                    startActivity(activity_play);
+                }
             }
         });
 
-        btnrapide = (Button) findViewById(R.id.button6);
+        btnrapide = (Button) findViewById(R.id.button5);
         btnrapide.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent partie_rapide = new Intent (Menu.this, GeoQuestMap.class);
-                selected_item = "Partie_test";
-                partie_rapide.putExtra("menu",selected_item);
+                Intent partie_rapide = new Intent(Menu.this, GeoQuestMap.class);
+                partie_rapide.putExtra("menu","Partie_test");
                 startActivity(partie_rapide);
             }
         });
@@ -80,8 +77,7 @@ public class Menu extends AppCompatActivity {
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                selected_item = spinner.getSelectedItem().toString();
-                Log.d(TAG,selected_item);
+                selected_item = "";
             }
         });
 
@@ -90,18 +86,18 @@ public class Menu extends AppCompatActivity {
     private void getFilenames() {
 
         this.filesnames = getApplicationContext().getFilesDir().list();
-        this.list = new ArrayList<String>();
-        //Pattern p = Pattern.compile("parcours_./");
+        this.list = new ArrayList<>();
+        Pattern p = Pattern.compile("^parcours_.*");
 
         for (int i = 0; i < filesnames.length; i++) {
 
-            // Matcher m = p.matcher(filesnames[i]);
-            //if(m.matches()) {
-            list.add(filesnames[i]);
-
-            //            }
+            Matcher m = p.matcher(filesnames[i]);
+            if(m.matches()) {
+                //list.add(filesnames[i]);
+                list.add(filesnames[i].replaceAll("^parcours_", ""));
+            }
         }
-        ArrayAdapter<String> filesnameAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, list);
+        ArrayAdapter<String> filesnameAdapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, list);
         spinner.setAdapter(filesnameAdapter);
 
 

@@ -23,7 +23,6 @@ import android.widget.Toast;
 
 import org.json.JSONException;
 import org.osmdroid.api.IMapController;
-import org.osmdroid.tileprovider.constants.OpenStreetMapTileProviderConstants;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
@@ -32,9 +31,7 @@ import org.osmdroid.views.overlay.ItemizedOverlay;
 import org.osmdroid.views.overlay.OverlayItem;
 
 import java.io.File;
-import java.io.FileReader;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
 /**
@@ -45,7 +42,6 @@ public class GeoQuestMap extends AppCompatActivity {
     private MapView map;
     private IMapController mapController;
     private ItemizedOverlay<OverlayItem> mMyLocationOverlay;
-    private static final String TAG = "GeoQuest";
     private Balises[] Tab_Balises;
     private int hint_num = 0;
 
@@ -121,6 +117,7 @@ public class GeoQuestMap extends AppCompatActivity {
                 RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         textHintLayoutParams.addRule(RelativeLayout.RIGHT_OF, imageHint.getId());
         textHintLayoutParams.addRule(RelativeLayout.CENTER_VERTICAL);
+        textHintLayoutParams.setMargins(15,0,0,0);
 
         hintLayout.addView(imageHint, imageHintLayoutParams);
         hintLayout.addView(textHint, textHintLayoutParams);
@@ -142,22 +139,15 @@ public class GeoQuestMap extends AppCompatActivity {
                 }
             }
         });
-        if (nom_fichier=="partie_rapide") {
+        if (nom_fichier.equals("Partie_test")) {
             try {
-                InputStream is = getResources().openRawResource(R.raw.test);
                 JsonParser parser_Json = new JsonParser();
-                try {
-                    Tab_Balises = parser_Json.JsonParser(is);
-                } catch (UnsupportedEncodingException e) {
-                    e.printStackTrace();
-                }
+                Tab_Balises = parser_Json.getJson(this, R.raw.test);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }else{
             try {
-                String test = getApplicationContext().getFilesDir().toString();
-                Log.d("crash test", test + File.separator + nom_fichier);
                 JsonParser parser_Json = new JsonParser();
                 Tab_Balises = parser_Json.JsonParser(getApplicationContext().getFilesDir().toString() + File.separator + nom_fichier);
 
@@ -165,11 +155,11 @@ public class GeoQuestMap extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
-        setHint(Tab_Balises[hint_num].getI().getText(), Tab_Balises[hint_num].getI().getImage());
-
+        setHint(Tab_Balises[hint_num].getIndice().getTexte(), Tab_Balises[hint_num].getIndice().getImage());
     }
 
     private void setHint(String text, String urlImage) {
+        Log.i("Map", "image : " + urlImage);
         TextView textHint = (TextView) findViewById(R.id.textHintId);
         ImageView imageView = (ImageView) findViewById(R.id.imageHintId);
         if (text == "") {
@@ -189,16 +179,13 @@ public class GeoQuestMap extends AppCompatActivity {
 /* Class My Location Listener */
 
     private class MyLocationListener implements LocationListener {
+        private final int distanceTampon = 5;
 
         @Override
         public void onLocationChanged(Location loc)
         {
             loc.getLatitude();
             loc.getLongitude();
-            String Text = "My current location is: " +
-                    "Latitude = " + loc.getLatitude() +
-                    "Longitude = " + loc.getLongitude();
-            Toast.makeText( getApplicationContext(), Text, Toast.LENGTH_SHORT).show();
             GeoPoint newPoint = new GeoPoint(loc.getLatitude(), loc.getLongitude());
             mapController.setCenter(newPoint);
 
@@ -220,15 +207,32 @@ public class GeoQuestMap extends AppCompatActivity {
 
             map.getOverlays().add(mMyLocationOverlay);
 
-            if (loc.getLatitude()==Tab_Balises[hint_num].getC().getLatitude()
-                    && loc.getLongitude()==Tab_Balises[hint_num].getC().getLongitude()){
+
+            if (distFrom(loc.getLatitude(), loc.getLongitude(),
+                    Tab_Balises[hint_num].getCoordonnee().getLatitude(),
+                    Tab_Balises[hint_num].getCoordonnee().getLongitude())
+                    <= distanceTampon) {
+                RelativeLayout hintLayout = (RelativeLayout) findViewById(R.id.hintLayout);
+                hintLayout.setVisibility(View.VISIBLE);
                 if (hint_num<Tab_Balises.length-1) {
                     hint_num++;
-                    setHint(Tab_Balises[hint_num].getI().getText(), Tab_Balises[hint_num].getI().getImage());
+                    setHint(Tab_Balises[hint_num].getIndice().getTexte(), Tab_Balises[hint_num].getIndice().getImage());
                 } else
                     setHint("Vous avez gagné !","http://t3.gstatic.com/images?q=tbn:ANd9GcTBKL45MTNFLNoSeqhQvER7XsB2LbK_Htl28rW7nt5GZWWTi8NxC5jQmuA");
             }
+        }
 
+        public double distFrom(double lat1, double lng1, double lat2, double lng2) {
+            double earthRadius = 6371000; //meters
+            double dLat = Math.toRadians(lat2-lat1);
+            double dLng = Math.toRadians(lng2-lng1);
+            double a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                    Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) *
+                            Math.sin(dLng/2) * Math.sin(dLng/2);
+            double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+            double dist = (float) (earthRadius * c);
+
+            return dist;
         }
 
         @Override

@@ -5,28 +5,28 @@ package fr.enssat.serot_ldp.geoquest;
  */
 
 public class Balises {
-    private Coordonnee C;
-    private Indice I;
+    private Coordonnee coordonnee;
+    private Indice indice;
 
     public Balises (Coordonnee C, Indice I){
-        this.C = C;
-        this.I = I;
+        this.coordonnee = C;
+        this.indice = I;
     }
 
-    public Indice getI() {
-        return I;
+    public Indice getIndice() {
+        return indice;
     }
 
-    public void setI(Indice i) {
-        I = i;
+    public void setIndice(Indice indice) {
+        indice = indice;
     }
 
-    public Coordonnee getC() {
-        return C;
+    public Coordonnee getCoordonnee() {
+        return coordonnee;
     }
 
-    public void setC(Coordonnee c) {
-        C = c;
+    public void setCoordonnee(Coordonnee coordonnee) {
+        coordonnee = coordonnee;
     }
 
 }

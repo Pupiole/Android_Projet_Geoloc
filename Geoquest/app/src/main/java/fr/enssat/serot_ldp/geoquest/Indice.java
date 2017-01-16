@@ -6,12 +6,12 @@ package fr.enssat.serot_ldp.geoquest;
 
 public class Indice {
     String image;
-    String text;
+    String texte;
 
     public Indice (String text, String image){
 
         this.image = image;
-        this.text = text;
+        this.texte = text;
     }
 
 
@@ -23,11 +23,11 @@ public class Indice {
         this.image = image;
     }
 
-    public String getText() {
-        return text;
+    public String getTexte() {
+        return texte;
     }
 
     public void setText(String text) {
-        this.text = text;
+        this.texte = text;
     }
 }

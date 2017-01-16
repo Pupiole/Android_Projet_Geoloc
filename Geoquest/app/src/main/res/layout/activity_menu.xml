@@ -18,16 +18,14 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="30dp" />
 
-        <Spinner
-            android:layout_width="match_parent"
+        <Button
+            android:text="Partie rapide"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/button4"
-            android:layout_marginTop="52dp"
-            android:id="@+id/spinner"
-            android:layout_alignLeft="@+id/button6"
-            android:layout_alignStart="@+id/button6"
-            android:layout_alignRight="@+id/button6"
-            android:layout_alignEnd="@+id/button6" />
+            android:layout_marginTop="73dp"
+            android:id="@+id/button5"
+            android:layout_alignTop="@id/textView4"
+            android:layout_centerHorizontal="true" />
 
         <Button
             android:text="Lancer partie"
@@ -36,7 +34,7 @@
             android:layout_marginTop="40dp"
             android:id="@+id/button4"
             android:textAppearance="@style/TextAppearance.AppCompat.Button"
-            android:layout_below="@+id/textView4"
+            android:layout_below="@id/button5"
             android:layout_centerHorizontal="true" />
 
         <Button
@@ -49,13 +47,15 @@
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="56dp" />
 
-        <Button
-            android:text="Partie rapide"
-            android:layout_width="wrap_content"
+        <Spinner
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="73dp"
-            android:id="@+id/button"
-            android:layout_alignBottom="@+id/button6"
-            android:layout_centerHorizontal="true" />
+            android:layout_below="@+id/button4"
+            android:layout_marginTop="52dp"
+            android:id="@+id/spinner"
+            android:layout_alignLeft="@+id/button6"
+            android:layout_alignStart="@+id/button6"
+            android:layout_alignRight="@+id/button6"
+            android:layout_alignEnd="@+id/button6" />
     </RelativeLayout>
 </LinearLayout>

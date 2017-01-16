@@ -1,19 +1,28 @@
 [{
-    "C": {
-      "Longitude": "-0.3219649999999774",
-      "Latitude": "49.1347368"
-    },
-    "I": {
-      "Image": "String",
-      "Texte": "Cherche encore !"
-    }
-  }, {
-    "C": {
-      "Longitude": "-0.3219649999999774",
-      "Latitude": "49.1347368"
-    },
-    "I": {
-      "Image": "String",
-      "Texte": "String"
-    }
-  }]
+  "coordonnee": {
+    "longitude": "-3.46237",
+    "latitude": "48.729651"
+  },
+  "indice": {
+    "image": "http://raidaventure.management.enssat.fr/wp-content/uploads/2016/03/enssat-400x280.jpg",
+    "texte": ""
+  }
+}, {
+  "coordonnee": {
+    "longitude": "-3.461304",
+    "latitude": "48.730107"
+  },
+  "indice": {
+    "image": "",
+    "texte": "Lire, c'est important. Avec un abonnement, c'est mieux."
+  }
+}, {
+  "coordonnee": {
+    "longitude": "-3.460395",
+    "latitude": "48.731467"
+  },
+  "indice": {
+    "image": "https://upload.wikimedia.org/wikipedia/fr/thumb/0/08/La_mie_caline.jpg/220px-La_mie_caline.jpg",
+    "texte": "Petit déjeuner et déjeuner des enssatiens !"
+  }
+}]
