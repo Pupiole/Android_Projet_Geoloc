@@ -1,11 +1,11 @@
 package fr.enssat.serot_ldp.geoquest;
 
 import android.app.Dialog;
-import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
@@ -86,12 +86,12 @@ public class EditionActivity extends AppCompatActivity {
 
     private void showDialog() {
         DialogFragment dialog = new AjoutBaliseDialogFragment();
-        dialog.show(this.getFragmentManager(), "AjoutBaliseDialogFragment");
+        dialog.show(this.getSupportFragmentManager(), "AjoutBaliseDialogFragment");
     }
 
     private void showDialogEdit() {
         DialogFragment dialog = new EditBaliseDialogFragment();
-        dialog.show(this.getFragmentManager(), "AjoutBaliseDialogFragment");
+        dialog.show(this.getSupportFragmentManager(), "AjoutBaliseDialogFragment");
     }
 
     public static class AjoutBaliseDialogFragment extends DialogFragment {
