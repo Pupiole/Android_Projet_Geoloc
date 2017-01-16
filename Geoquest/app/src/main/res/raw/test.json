@@ -1,0 +1,19 @@
+[{
+    "C": {
+      "Longitude": "-0.3219649999999774",
+      "Latitude": "49.1347368"
+    },
+    "I": {
+      "Image": "String",
+      "Texte": "Cherche encore !"
+    }
+  }, {
+    "C": {
+      "Longitude": "-0.3219649999999774",
+      "Latitude": "49.1347368"
+    },
+    "I": {
+      "Image": "String",
+      "Texte": "String"
+    }
+  }]

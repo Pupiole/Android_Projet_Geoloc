@@ -25,7 +25,7 @@ import java.util.regex.Pattern;
 public class Menu extends AppCompatActivity {
 
     private Spinner spinner;
-    private Button btnjouer, btnediter;
+    private Button btnjouer, btnediter,btnrapide;
     public String map_game = "test";
     private static final String TAG = "menu";
     String[] filesnames = null;
@@ -44,8 +44,15 @@ public class Menu extends AppCompatActivity {
             public void onClick(View v) {
                 Intent activity_play = new Intent(Menu.this, GeoQuestMap.class);
                 activity_play.putExtra("menu",selected_item);
-                Log.d("Filename selected :", selected_item);
                 startActivity(activity_play);
+            }
+        });
+        btnrapide = (Button) findViewById(R.id.button6);
+        btnrapide.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent partie_rapide = new Intent (Menu.this, GeoQuestMap.class);
+                startActivity(partie_rapide);
             }
         });
 

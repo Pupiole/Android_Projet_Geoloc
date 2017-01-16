@@ -7,7 +7,7 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="numberDecimal"
+        android:inputType="numberSigned|numberDecimal"
         android:ems="10"
         android:id="@+id/editLongitude"
         android:hint="Longitude" />
@@ -18,7 +18,7 @@
         android:ems="10"
         android:id="@+id/editLatitude"
         android:hint="Latitude"
-        android:inputType="numberDecimal" />
+        android:inputType="numberSigned|numberDecimal" />
 
     <EditText
         android:layout_width="match_parent"

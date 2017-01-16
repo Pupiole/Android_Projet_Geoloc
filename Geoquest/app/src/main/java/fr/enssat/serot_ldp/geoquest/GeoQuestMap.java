@@ -21,7 +21,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONException;
 import org.osmdroid.api.IMapController;
+import org.osmdroid.tileprovider.constants.OpenStreetMapTileProviderConstants;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
@@ -29,6 +31,8 @@ import org.osmdroid.views.overlay.ItemizedIconOverlay;
 import org.osmdroid.views.overlay.ItemizedOverlay;
 import org.osmdroid.views.overlay.OverlayItem;
 
+import java.io.File;
+import java.io.FileReader;
 import java.io.InputStream;
 import java.util.ArrayList;
 
@@ -41,6 +45,9 @@ public class GeoQuestMap extends AppCompatActivity {
     private IMapController mapController;
     private ItemizedOverlay<OverlayItem> mMyLocationOverlay;
     private static final String TAG = "GeoQuest";
+    private Balises[] Tab_Balises;
+    private int hint_num = 0;
+    private Boolean intent_test = false;
 
     @Override public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,6 +55,11 @@ public class GeoQuestMap extends AppCompatActivity {
 
         Intent intent = getIntent();
         String newString = intent.getStringExtra("menu");
+        if (newString==null){
+            intent_test = false;
+        }else{
+            intent_test = true;
+        }
         Log.d("geoquest",newString);
 
 
@@ -137,8 +149,20 @@ public class GeoQuestMap extends AppCompatActivity {
                 }
             }
         });
-        setHint("Hint",
-                "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/Android_robot.svg/2000px-Android_robot.svg.png");
+        if (intent_test==true) {
+            try {
+                String test = getApplicationContext().getFilesDir().toString();
+                Log.d("crash test", test + File.separator + newString);
+                Tab_Balises = new JsonParser().JsonParser(getApplicationContext().getFilesDir().toString() + File.separator + newString);
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }else{
+
+        }
+        setHint(Tab_Balises[hint_num].getI().getText(), Tab_Balises[hint_num].getI().getImage());
+
     }
 
     private void setHint(String text, String urlImage) {
@@ -191,6 +215,16 @@ public class GeoQuestMap extends AppCompatActivity {
                     }, getApplicationContext());
 
             map.getOverlays().add(mMyLocationOverlay);
+
+            if (loc.getLatitude()==Tab_Balises[hint_num].getC().getLatitude()
+                    && loc.getLongitude()==Tab_Balises[hint_num].getC().getLongitude()){
+                if (hint_num<Tab_Balises.length-1) {
+                    hint_num++;
+                    setHint(Tab_Balises[hint_num].getI().getText(), Tab_Balises[hint_num].getI().getImage());
+                } else
+                    setHint("Vous avez gagné !","http://t3.gstatic.com/images?q=tbn:ANd9GcTBKL45MTNFLNoSeqhQvER7XsB2LbK_Htl28rW7nt5GZWWTi8NxC5jQmuA");
+            }
+
         }
 
         @Override
