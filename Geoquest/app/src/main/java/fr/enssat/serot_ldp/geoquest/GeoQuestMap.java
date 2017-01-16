@@ -34,6 +34,7 @@ import org.osmdroid.views.overlay.OverlayItem;
 import java.io.File;
 import java.io.FileReader;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
 /**
@@ -47,21 +48,13 @@ public class GeoQuestMap extends AppCompatActivity {
     private static final String TAG = "GeoQuest";
     private Balises[] Tab_Balises;
     private int hint_num = 0;
-    private Boolean intent_test = false;
 
     @Override public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         org.osmdroid.tileprovider.constants.OpenStreetMapTileProviderConstants.setUserAgentValue(BuildConfig.APPLICATION_ID);
 
         Intent intent = getIntent();
-        String newString = intent.getStringExtra("menu");
-        if (newString==null){
-            intent_test = false;
-        }else{
-            intent_test = true;
-        }
-        Log.d("geoquest",newString);
-
+        String nom_fichier = intent.getStringExtra("menu");
 
         map = new MapView(this);
         map.setTileSource(TileSourceFactory.MAPNIK);
@@ -149,17 +142,28 @@ public class GeoQuestMap extends AppCompatActivity {
                 }
             }
         });
-        if (intent_test==true) {
+        if (nom_fichier=="partie_rapide") {
             try {
-                String test = getApplicationContext().getFilesDir().toString();
-                Log.d("crash test", test + File.separator + newString);
-                Tab_Balises = new JsonParser().JsonParser(getApplicationContext().getFilesDir().toString() + File.separator + newString);
-
+                InputStream is = getResources().openRawResource(R.raw.test);
+                JsonParser parser_Json = new JsonParser();
+                try {
+                    Tab_Balises = parser_Json.JsonParser(is);
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }else{
+            try {
+                String test = getApplicationContext().getFilesDir().toString();
+                Log.d("crash test", test + File.separator + nom_fichier);
+                JsonParser parser_Json = new JsonParser();
+                Tab_Balises = parser_Json.JsonParser(getApplicationContext().getFilesDir().toString() + File.separator + nom_fichier);
 
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
         setHint(Tab_Balises[hint_num].getI().getText(), Tab_Balises[hint_num].getI().getImage());
 

@@ -19,6 +19,9 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -39,6 +42,16 @@ public class JsonParser {
         }
         return staff;
     }
+
+    public Balises[] JsonParser(InputStream Localisationgeojson) throws JSONException, UnsupportedEncodingException {
+        Gson gson = new Gson();
+        Balises[] staff = null;
+        Reader reader = new InputStreamReader(Localisationgeojson, "UTF-8");
+        staff = gson.fromJson(reader, Balises[].class);
+        return staff;
+    }
+
+
 
     public void saveJsonFile(Context context, String parcoursName, List<Balises> parcours) throws JSONException {
         String json = new Gson().toJson(parcours);

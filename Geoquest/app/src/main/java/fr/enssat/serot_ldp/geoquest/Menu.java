@@ -47,11 +47,14 @@ public class Menu extends AppCompatActivity {
                 startActivity(activity_play);
             }
         });
+
         btnrapide = (Button) findViewById(R.id.button6);
         btnrapide.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent partie_rapide = new Intent (Menu.this, GeoQuestMap.class);
+                selected_item = "Partie_test";
+                partie_rapide.putExtra("menu",selected_item);
                 startActivity(partie_rapide);
             }
         });
